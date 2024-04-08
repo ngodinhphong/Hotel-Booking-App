@@ -1,0 +1,20 @@
+server:
+  port: 8088
+
+Spring:
+  datasource:
+    url: jdbc:mysql://localhost:3308/booking_hotel
+    username: root
+    password: admin123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+key:
+  token:
+    jwt: TWxThEzeZN62FmZBiCVQnnssYZwUt5qlqp7euvUOnYI=
+
+upload:
+  file:
+    path: D:\Springboot\data
