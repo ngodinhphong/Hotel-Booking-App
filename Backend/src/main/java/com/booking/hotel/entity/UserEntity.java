@@ -2,10 +2,8 @@ package com.booking.hotel.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity(name = "users")
-public class UsersEntity {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,15 +15,15 @@ public class UsersEntity {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "full_name")
-    private String fullname;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private RolesEntity role;
-
-    @OneToMany(mappedBy="user")
-    private List<BookingEntity> bookings;
+    private RoleEntity role;
 
     public int getId() {
         return id;
@@ -51,27 +49,27 @@ public class UsersEntity {
         this.password = password;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public RolesEntity getRole() {
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public RoleEntity getRole() {
         return role;
     }
 
-    public void setRole(RolesEntity role) {
+    public void setRole(RoleEntity role) {
         this.role = role;
-    }
-
-    public List<BookingEntity> getBookings() {
-        return bookings;
-    }
-
-    public void setBookings(List<BookingEntity> bookings) {
-        this.bookings = bookings;
     }
 }

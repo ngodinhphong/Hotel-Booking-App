@@ -5,21 +5,24 @@ import com.booking.hotel.payload.request.RoomRequest;
 import com.booking.hotel.payload.response.BaseResponse;
 import com.booking.hotel.service.imp.RoomServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/room")
-@CrossOrigin
 public class RoomController {
 
     @Autowired
     RoomServiceImp roomServiceImp;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addUser( RoomRequest roomRequest) {
-        System.out.println("kiểm tra " + roomRequest.getImage().getOriginalFilename());
+    public ResponseEntity<?> addRoom( RoomRequest roomRequest) {
         boolean isSuccess = roomServiceImp.addRoom(roomRequest.getRoomType(), roomRequest.getRoomPrice(), roomRequest.getImage());
 
         BaseResponse baseResponse = new BaseResponse();
@@ -72,6 +75,21 @@ public class RoomController {
         baseResponse.setMessage(roomDTO == null ? "Không tìm thấy room" : "");
         baseResponse.setData(roomDTO);
         return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/available-rooms")
+    public ResponseEntity<?> getAvailableRooms(
+            @RequestParam("checkInDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
+            @RequestParam("checkOutDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate checkOutDate,
+            @RequestParam("roomType") String roomType){
+        List<RoomDTO> roomDTOS = roomServiceImp.getAvailableRooms(checkInDate, checkOutDate, roomType);
+        if (roomDTOS.isEmpty()){
+            return ResponseEntity.noContent().build();
+        } else {
+            BaseResponse baseResponse = new BaseResponse();
+            baseResponse.setData(roomDTOS);
+            return ResponseEntity.ok(baseResponse);
+        }
     }
 
 }

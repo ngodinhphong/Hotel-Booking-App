@@ -28,7 +28,9 @@ public class CustomJwtFilter extends OncePerRequestFilter {
     private Gson gson = new Gson();
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         String headerAuthen = request.getHeader("Authorization");
 
         if(headerAuthen != null && headerAuthen.trim().length() > 0){
@@ -42,7 +44,6 @@ public class CustomJwtFilter extends OncePerRequestFilter {
                 List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
                 SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(role.getName());
                 authorityList.add(simpleGrantedAuthority);
-
 
                 //Tạo chứng thực cho security biết là đã hợp lệ và bypass được tất cả các filter của security
                 UsernamePasswordAuthenticationToken authen =

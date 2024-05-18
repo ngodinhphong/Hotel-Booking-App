@@ -6,6 +6,7 @@ import com.booking.hotel.entity.RoomEntity;
 import com.booking.hotel.payload.request.RoomRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RoomServiceImp {
@@ -21,4 +22,6 @@ public interface RoomServiceImp {
     boolean updateRoom(RoomRequest roomRequest);
 
     RoomDTO getRoomById(int id);
+
+    List<RoomDTO> getAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate, String roomType);
 }

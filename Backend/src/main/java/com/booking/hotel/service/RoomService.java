@@ -1,7 +1,9 @@
 package com.booking.hotel.service;
 
+import com.booking.hotel.dto.BookingDTO;
 import com.booking.hotel.dto.RoomDTO;
 import com.booking.hotel.dto.RoomTypesDTO;
+import com.booking.hotel.entity.BookingEntity;
 import com.booking.hotel.entity.RoomEntity;
 import com.booking.hotel.payload.request.RoomRequest;
 import com.booking.hotel.repository.RoomRepository;
@@ -11,13 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class RoomServiec implements RoomServiceImp {
+public class RoomService implements RoomServiceImp {
 
     @Autowired
     RoomRepository roomRepository;
@@ -116,6 +119,33 @@ public class RoomServiec implements RoomServiceImp {
         roomDTO.setRoomPrice(roomEntity.getRoomPrice());
         roomDTO.setImageDynamic(roomEntity.getImage());
         return roomDTO;
+    }
+
+    @Override
+    public List<RoomDTO> getAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate, String roomType) {
+        List<RoomEntity> roomEntities = roomRepository.findAvailableRoomsByDatesAndType(checkInDate, checkOutDate, roomType);
+        List<RoomDTO> roomDTOS = new ArrayList<>();
+        roomEntities.forEach(room -> {
+            List<BookingEntity> bookingEntities = room.getBookings();
+            List<BookingDTO> bookingDTOS = bookingEntities
+                    .stream()
+                    .map(booking -> new BookingDTO(
+                            booking.getId(),
+                            booking.getCheckInDate(),
+                            booking.getCheckOutDate(),
+                            booking.getConfirmationCode()
+                    )).toList();
+            RoomDTO roomDTO = new RoomDTO(
+                    room.getId(),
+                    room.getRoomType(),
+                    room.getRoomPrice(),
+                    room.getImage(),
+                    bookingDTOS
+                    );
+            roomDTO.setImageDynamic(room.getImage());
+            roomDTOS.add(roomDTO);
+        });
+        return roomDTOS;
     }
 
     public RoomEntity roomById(int id) {

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity(name = "roles")
-public class RolesEntity {
+public class RoleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +15,7 @@ public class RolesEntity {
     private String name;
 
     @OneToMany(mappedBy = "role")
-    private List<UsersEntity> users;
+    private List<UserEntity> users;
 
     public int getId() {
         return id;
@@ -33,11 +33,11 @@ public class RolesEntity {
         this.name = name;
     }
 
-    public List<UsersEntity> getUsers() {
+    public List<UserEntity> getUsers() {
         return users;
     }
 
-    public void setUsers(List<UsersEntity> users) {
+    public void setUsers(List<UserEntity> users) {
         this.users = users;
     }
 }

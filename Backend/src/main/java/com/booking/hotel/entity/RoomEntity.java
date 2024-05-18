@@ -1,7 +1,9 @@
 package com.booking.hotel.entity;
 
 import jakarta.persistence.*;
+import org.apache.commons.lang3.RandomStringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "room")
@@ -25,6 +27,20 @@ public class RoomEntity {
 
     @OneToMany(mappedBy="room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BookingEntity> bookings;
+
+    public RoomEntity() {
+        this.bookings = new ArrayList<>();
+    }
+    public void addBooking(BookingEntity booking){
+        if (bookings == null){
+            bookings = new ArrayList<>();
+        }
+        bookings.add(booking);
+        booking.setRoom(this);
+        isBooked = true;
+        String bookingCode = RandomStringUtils.randomNumeric(10);
+        booking.setConfirmationCode(bookingCode);
+    }
 
     public int getId() {
         return id;

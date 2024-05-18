@@ -1,6 +1,7 @@
 package com.booking.hotel.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity(name = "booking")
@@ -11,10 +12,10 @@ public class BookingEntity {
     private int id;
 
     @Column(name = "check_in")
-    private LocalDate checkIn;
+    private LocalDate checkInDate;
 
     @Column(name = "check_out")
-    private LocalDate checkOut;
+    private LocalDate checkOutDate;
 
     @Column(name = "adults")
     private int adults;
@@ -28,13 +29,16 @@ public class BookingEntity {
     @Column(name = "confirmation_code")
     private String confirmationCode;
 
+    @Column(name = "guest_email")
+    private String guestEmail;
+
+    @Column(name = "guest_full_name")
+    private String guestFullName;
+
     @ManyToOne
     @JoinColumn(name = "room_id")
     private RoomEntity room;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UsersEntity user;
 
     public void calculateTotalNumberOfGuest() {
         this.totalGuest = this.adults + children;
@@ -58,20 +62,20 @@ public class BookingEntity {
         this.id = id;
     }
 
-    public LocalDate getCheckIn() {
-        return checkIn;
+    public LocalDate getCheckInDate() {
+        return checkInDate;
     }
 
-    public void setCheckIn(LocalDate checkIn) {
-        this.checkIn = checkIn;
+    public void setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
     }
 
-    public LocalDate getCheckOut() {
-        return checkOut;
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
     }
 
-    public void setCheckOut(LocalDate checkOut) {
-        this.checkOut = checkOut;
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
     }
 
     public int getAdults() {
@@ -106,11 +110,19 @@ public class BookingEntity {
         this.room = room;
     }
 
-    public UsersEntity getUser() {
-        return user;
+    public String getGuestEmail() {
+        return guestEmail;
     }
 
-    public void setUser(UsersEntity user) {
-        this.user = user;
+    public void setGuestEmail(String guestEmail) {
+        this.guestEmail = guestEmail;
+    }
+
+    public String getGuestFullName() {
+        return guestFullName;
+    }
+
+    public void setGuestFullName(String guestFullName) {
+        this.guestFullName = guestFullName;
     }
 }
