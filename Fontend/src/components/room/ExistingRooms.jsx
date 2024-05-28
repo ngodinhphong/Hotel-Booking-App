@@ -46,9 +46,9 @@ const ExistingRooms = () => {
 		setCurrentPage(pageNumber)
 	}
 
-	const handleDelete = async (roomId) => {
+	const handleDelete = async (id) => {
 		try {
-			const result = await deleteRoom(roomId)
+			const result = await deleteRoom(id)
 			setSuccessMessage(result.message)
 			fetchRooms()
 		} catch (error) {

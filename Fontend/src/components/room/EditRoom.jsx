@@ -12,7 +12,7 @@ const EditRoom = () => {
 	const [imagePreview, setImagePreview] = useState("")
 	const [successMessage, setSuccessMessage] = useState("")
 	const [errorMessage, setErrorMessage] = useState("")
-	const { roomId } = useParams()
+	const {id} = useParams()
 
 	const handleImageChange = (e) => {
 		const selectedImage = e.target.files[0]
@@ -28,7 +28,7 @@ const EditRoom = () => {
 	useEffect(() => {
 		const fetchRoom = async () => {
 			try {
-				const roomData = await getRoomById(roomId)
+				const roomData = await getRoomById(id)
 				setRoom(roomData.data)
 				setImagePreview(roomData.data.image)
 			} catch (error) {
@@ -37,17 +37,17 @@ const EditRoom = () => {
 		}
 
 		fetchRoom()
-	}, [roomId])
+	}, [id])
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 
 		try {
-			const response = await updateRoom(roomId, room)
+			const response = await updateRoom(id, room)
 			console.log(response.statusCode)
 			if (response.statusCode === 200) {
 				setSuccessMessage(response.message)
-				const updatedRoomData = await getRoomById(roomId)
+				const updatedRoomData = await getRoomById(id)
 				setRoom(updatedRoomData)
 				setImagePreview(updatedRoomData.data.image)
 				setErrorMessage("")
